@@ -49,11 +49,17 @@ clear all;close all;clc;
     
     disp('III  Construction de la matrice R')
     matriceR1=ConstructionRw(ModePropreNorme,matrice,donnee);
-    %matriceR=ConstructionRu(ModePropreNorme,matrice,donnee,matriceR1);
-    %clear R1;
+    matriceR=ConstructionRu(ModePropreNorme,matrice,donnee,matriceR1);
+    matriceR.Rw=matriceR1.Rw;
+    clear matriceR1;
     
+    % Calcul des valeurs observées
     
-    
+    disp('IV  Calcul des valeurs observées')
+    X=rand(size(ModePropreNorme.Vecteur,2),1);
+    Vecteurp=roundn(X,-3);
+    clear X;
+    ModePropreObs=Calculobs(Vecteurp,ModePropreNorme,matriceR);
     
     
     
