@@ -49,8 +49,8 @@ clear all;close all;clc;
     
     disp('III  Construction de la matrice R')
     matriceR1=ConstructionRw(ModePropreNorme,matrice,donnee);
-    matriceR=ConstructionRu(ModePropreNorme,matrice,donnee,matriceR1);
-    clear R1;
+    %matriceR=ConstructionRu(ModePropreNorme,matrice,donnee,matriceR1);
+    %clear R1;
     
     
     
