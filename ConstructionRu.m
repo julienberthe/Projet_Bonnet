@@ -1,7 +1,5 @@
 function toto=ConstructionRu(ModePropreNorme,matrice,donneeS,matriceR1);
 
-% A COMPLETEMENT MODIFIER -> RIEN N'EST FAIT...
-
     K_elem=[1 -1;-1 1];			%matrice elementaire
 	toto.Ru=zeros(size(ModePropreNorme.Valeur,2)*(donneeS.nelem+1),donneeS.nelem);		%initialisation de la matrice Rw
     
