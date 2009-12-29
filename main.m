@@ -61,6 +61,52 @@ clear all;close all;clc;
     clear X;
     ModePropreObs=Calculobs(Vecteurp,ModePropreNorme,matriceR);
     
+    % Probleme inverse pour retrouver deltap à partir des valeurs propres
+    
+    deltaw=ModePropreObs.Valeur-ModePropreNorme.Valeur';
+    Vecteurp_recons=cgs(matriceR.Rw,deltaw);
+    ModePropreComp.Valeur= ModePropreObs.Valeur - matriceR.Rw*Vecteurp_recons;
+    x=1:1:size(ModePropreNorme.Valeur,2);
+    
+    % On bruite les données
+    
+    % Entre 0 et 1%
+   
+    ModePropreObsBruit1.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/100)*rand(1,1);
+    deltaw1=ModePropreObsBruit1.Valeur-ModePropreNorme.Valeur';
+    Vecteurp_recons_bruit1=cgs(matriceR.Rw,deltaw1);
+    
+    
+    % Entre 0 et 5%
+    
+    ModePropreObsBruit2.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/20)*rand(1,1);
+    deltaw2=ModePropreObsBruit2.Valeur-ModePropreNorme.Valeur';
+    Vecteurp_recons_bruit2=cgs(matriceR.Rw,deltaw2);
+    
+    % Entre 0 et 10%
+   
+    ModePropreObsBruit3.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/10)*rand(1,1);
+    deltaw3=ModePropreObsBruit3.Valeur-ModePropreNorme.Valeur';
+    Vecteurp_recons_bruit3=cgs(matriceR.Rw,deltaw3);
+    
+    % Entre 0 et 20%
+   
+    ModePropreObsBruit4.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/5)*rand(1,1);
+    deltaw4=ModePropreObsBruit4.Valeur-ModePropreNorme.Valeur';
+    Vecteurp_recons_bruit4=cgs(matriceR.Rw,deltaw4);
+    
+    % Entre 0 et 100%
+    
+    ModePropreObsBruit5.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/1)*rand(1,1);
+    deltaw5=ModePropreObsBruit5.Valeur-ModePropreNorme.Valeur';
+    Vecteurp_recons_bruit5=cgs(matriceR.Rw,deltaw5);
+    
+    plot(x,Vecteurp_recons,'b',x,Vecteurp,'g',x,Vecteurp_recons_bruit1,'r');%,x,Vecteurp_recons_bruit1,'c',x,Vecteurp_recons_bruit2,'m',x,Vecteurp_recons_bruit3,'y',x,Vecteurp_recons_bruit4,'k');
+    
+    
+    
+    
+    
     
     
     
