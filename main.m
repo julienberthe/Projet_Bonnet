@@ -38,7 +38,7 @@ clear all;close all;clc;
     disp('Ib   Conditionnement des matrices par subsitution')
     [matriceS,donneeS]=Substitution(matrice,donnee);
     
-    disp('II   RÃ©solution sur la base des modes propres')
+    disp('II   Résolution sur la base des modes propres')
     disp('  a	 Calcul des modes et valeurs propres');
     ModePropre=CalculModePropre(matriceS,donneeS);
     
@@ -55,54 +55,106 @@ clear all;close all;clc;
     
     % Calcul des valeurs observÃ©es
     
-    disp('IV  Calcul des valeurs observÃ©es')
+    disp('IV  Calcul des valeurs observées')
     X=rand(size(ModePropreNorme.Vecteur,2),1);
-    Vecteurp=roundn(X,-3);
+    Vecteurp.orig=roundn(X,-3);
     clear X;
-    ModePropreObs=Calculobs(Vecteurp,ModePropreNorme,matriceR);
+    ModePropreObs=Calculobs(Vecteurp.orig,ModePropreNorme,matriceR);
     
     % Probleme inverse pour retrouver deltap à partir des valeurs propres
     
-    deltaw=ModePropreObs.Valeur-ModePropreNorme.Valeur';
-    Vecteurp_recons=cgs(matriceR.Rw,deltaw);
-    ModePropreComp.Valeur= ModePropreObs.Valeur - matriceR.Rw*Vecteurp_recons;
-    x=1:1:size(ModePropreNorme.Valeur,2);
+    delta.worig=ModePropreObs.Valeur-ModePropreNorme.Valeur';
+    Vecteurp.recons=cgs(matriceR.Rw,delta.worig);
+    ModePropreComp.Valeur= ModePropreObs.Valeur - matriceR.Rw*Vecteurp.recons;
+    Vecteurp_diff.orig=Vecteurp.recons-Vecteurp.orig;
+    Vecteurp_relat.orig=zeros(donnee.nelem,1);
+    for i=1:donnee.nelem
+        Vecteurp_relat.orig(i)=Vecteurp_diff.orig(i)/Vecteurp.orig(i);
+    end
+    x=1:1:donnee.nelem;
+    figure;
+    bar(x,Vecteurp_diff.orig)
+    bar(x,Vecteurp_relat.orig)
     
     % On bruite les données
     
     % Entre 0 et 1%
    
-    ModePropreObsBruit1.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/100)*rand(1,1);
-    deltaw1=ModePropreObsBruit1.Valeur-ModePropreNorme.Valeur';
-    Vecteurp_recons_bruit1=cgs(matriceR.Rw,deltaw1);
-    
+    ModePropreObs.Bruit1.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/100)*rand(1,1);
+    delta.w1=ModePropreObs.Bruit1.Valeur-ModePropreNorme.Valeur';
+    Vecteurp.recons_bruit1=cgs(matriceR.Rw,delta.w1);
+    Vecteurp_diff.bruit1=Vecteurp.recons_bruit1-Vecteurp.orig;
+    Vecteurp_relat.bruit1=zeros(donnee.nelem,1);
+    for i=1:donnee.nelem
+        Vecteurp_relat.bruit1(i)=Vecteurp_diff.bruit1(i)/Vecteurp.orig(i);
+    end
     
     % Entre 0 et 5%
     
-    ModePropreObsBruit2.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/20)*rand(1,1);
-    deltaw2=ModePropreObsBruit2.Valeur-ModePropreNorme.Valeur';
-    Vecteurp_recons_bruit2=cgs(matriceR.Rw,deltaw2);
-    
+    ModePropreObs.Bruit2.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/20)*rand(1,1);
+    delta.w2=ModePropreObs.Bruit2.Valeur-ModePropreNorme.Valeur';
+    Vecteurp.recons_bruit2=cgs(matriceR.Rw,delta.w2);
+    Vecteurp_diff.bruit2=Vecteurp.recons_bruit2-Vecteurp.orig;
+    Vecteurp_relat.bruit2=zeros(donnee.nelem,1);
+    for i=1:donnee.nelem
+        Vecteurp_relat.bruit2(i)=Vecteurp_diff.bruit2(i)/Vecteurp.orig(i);
+    end
     % Entre 0 et 10%
    
-    ModePropreObsBruit3.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/10)*rand(1,1);
-    deltaw3=ModePropreObsBruit3.Valeur-ModePropreNorme.Valeur';
-    Vecteurp_recons_bruit3=cgs(matriceR.Rw,deltaw3);
+    ModePropreObs.Bruit3.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/10)*rand(1,1);
+    delta.w3=ModePropreObs.Bruit3.Valeur-ModePropreNorme.Valeur';
+    Vecteurp.recons_bruit3=cgs(matriceR.Rw,delta.w3);
+    Vecteurp_diff.bruit3=Vecteurp.recons_bruit3-Vecteurp.orig;
+    Vecteurp_relat.bruit3=zeros(donnee.nelem,1);
+    for i=1:donnee.nelem
+        Vecteurp_relat.bruit3(i)=Vecteurp_diff.bruit3(i)/Vecteurp.orig(i);
+    end
+    
     
     % Entre 0 et 20%
    
-    ModePropreObsBruit4.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/5)*rand(1,1);
-    deltaw4=ModePropreObsBruit4.Valeur-ModePropreNorme.Valeur';
-    Vecteurp_recons_bruit4=cgs(matriceR.Rw,deltaw4);
+    ModePropreObs.Bruit4.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/5)*rand(1,1);
+    delta.w4=ModePropreObs.Bruit4.Valeur-ModePropreNorme.Valeur';
+    Vecteurp.recons_bruit4=cgs(matriceR.Rw,delta.w4);
+    Vecteurp_diff.bruit4=Vecteurp.recons_bruit4-Vecteurp.orig;
+    Vecteurp_relat.bruit4=zeros(donnee.nelem,1);
+    for i=1:donnee.nelem
+        Vecteurp_relat.bruit4(i)=Vecteurp_diff.bruit4(i)/Vecteurp.orig(i);
+    end
     
     % Entre 0 et 100%
     
-    ModePropreObsBruit5.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/1)*rand(1,1);
-    deltaw5=ModePropreObsBruit5.Valeur-ModePropreNorme.Valeur';
-    Vecteurp_recons_bruit5=cgs(matriceR.Rw,deltaw5);
+    ModePropreObs.Bruit5.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/1)*rand(1,1);
+    delta.w5=ModePropreObs.Bruit5.Valeur-ModePropreNorme.Valeur';
+    Vecteurp.recons_bruit5=cgs(matriceR.Rw,delta.w5);
+    Vecteurp_diff.bruit5=Vecteurp.recons_bruit5-Vecteurp.orig;
+    Vecteurp_relat.bruit5=zeros(donnee.nelem,1);
+    for i=1:donnee.nelem
+        Vecteurp_relat.bruit5(i)=Vecteurp_diff.bruit5(i)/Vecteurp.orig(i);
+    end
     
-    plot(x,Vecteurp_recons,'b',x,Vecteurp,'g',x,Vecteurp_recons_bruit1,'r');%,x,Vecteurp_recons_bruit1,'c',x,Vecteurp_recons_bruit2,'m',x,Vecteurp_recons_bruit3,'y',x,Vecteurp_recons_bruit4,'k');
+    %%Affichage
+    Vect_comp=zeros(donnee.nelem,6);
+    Vect_comp(:,1)=Vecteurp_diff.orig;
+    Vect_comp(:,2)=Vecteurp_diff.bruit1;
+    Vect_comp(:,3)=Vecteurp_diff.bruit2;
+    Vect_comp(:,4)=Vecteurp_diff.bruit3;
+    Vect_comp(:,5)=Vecteurp_diff.bruit4;
+    Vect_comp(:,6)=Vecteurp_diff.bruit5;
+    Vect_relat=zeros(donnee.nelem,6);
+    Vect_relat(:,1)=Vecteurp_relat.orig;
+    Vect_relat(:,2)=Vecteurp_relat.bruit1;
+    Vect_relat(:,3)=Vecteurp_relat.bruit2;
+    Vect_relat(:,4)=Vecteurp_relat.bruit3;
+    Vect_relat(:,5)=Vecteurp_relat.bruit4;
+    Vect_relat(:,6)=Vecteurp_relat.bruit5;
     
+    
+    figure;
+    %plot(x,Vecteurp.recons,'b',x,Vecteurp.orig,'g',x,Vecteurp.recons_bruit1,'r');%,x,Vecteurp_recons_bruit1,'c',x,Vecteurp_recons_bruit2,'m',x,Vecteurp_recons_bruit3,'y',x,Vecteurp_recons_bruit4,'k');
+    bar(x,Vect_comp,1.5)
+    figure;
+    bar(x,Vect_relat,1.5)
     
     
     
