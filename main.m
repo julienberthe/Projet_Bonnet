@@ -15,7 +15,7 @@ clear all;close all;clc;
 	donnee.mat.rho=7000;		%masse volumique
     
     %Parametres de la methode EF
-	donnee.nelem = 16;	%nombre d'elements
+	donnee.nelem = 50;	%nombre d'elements
     
     %mise en donnee
 	for i=1:donnee.nelem
@@ -62,9 +62,10 @@ clear all;close all;clc;
     ModePropreObs=Calculobs(Vecteurp.orig,ModePropreNorme,matriceR);
     
     % Probleme inverse pour retrouver deltap à partir des valeurs propres
+    tol=10^-9; %tolérance (critère d'arrêt du gradient conjugué)
     
     delta.worig=ModePropreObs.Valeur-ModePropreNorme.Valeur';
-    Vecteurp.recons=cgs(matriceR.Rw,delta.worig);
+    Vecteurp.recons=cgs(matriceR.Rw,delta.worig,tol);
     ModePropreComp.Valeur= ModePropreObs.Valeur - matriceR.Rw*Vecteurp.recons;
     Vecteurp_diff.orig=Vecteurp.recons-Vecteurp.orig;
     Vecteurp_relat.orig=zeros(donnee.nelem,1);
@@ -82,7 +83,7 @@ clear all;close all;clc;
    
     ModePropreObs.Bruit1.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/100)*rand(1,1);
     delta.w1=ModePropreObs.Bruit1.Valeur-ModePropreNorme.Valeur';
-    Vecteurp.recons_bruit1=cgs(matriceR.Rw,delta.w1);
+    Vecteurp.recons_bruit1=cgs(matriceR.Rw,delta.w1,tol);
     Vecteurp_diff.bruit1=Vecteurp.recons_bruit1-Vecteurp.orig;
     Vecteurp_relat.bruit1=zeros(donnee.nelem,1);
     for i=1:donnee.nelem
@@ -93,7 +94,7 @@ clear all;close all;clc;
     
     ModePropreObs.Bruit2.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/20)*rand(1,1);
     delta.w2=ModePropreObs.Bruit2.Valeur-ModePropreNorme.Valeur';
-    Vecteurp.recons_bruit2=cgs(matriceR.Rw,delta.w2);
+    Vecteurp.recons_bruit2=cgs(matriceR.Rw,delta.w2,tol);
     Vecteurp_diff.bruit2=Vecteurp.recons_bruit2-Vecteurp.orig;
     Vecteurp_relat.bruit2=zeros(donnee.nelem,1);
     for i=1:donnee.nelem
@@ -103,7 +104,7 @@ clear all;close all;clc;
    
     ModePropreObs.Bruit3.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/10)*rand(1,1);
     delta.w3=ModePropreObs.Bruit3.Valeur-ModePropreNorme.Valeur';
-    Vecteurp.recons_bruit3=cgs(matriceR.Rw,delta.w3);
+    Vecteurp.recons_bruit3=cgs(matriceR.Rw,delta.w3,tol);
     Vecteurp_diff.bruit3=Vecteurp.recons_bruit3-Vecteurp.orig;
     Vecteurp_relat.bruit3=zeros(donnee.nelem,1);
     for i=1:donnee.nelem
@@ -115,7 +116,7 @@ clear all;close all;clc;
    
     ModePropreObs.Bruit4.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/5)*rand(1,1);
     delta.w4=ModePropreObs.Bruit4.Valeur-ModePropreNorme.Valeur';
-    Vecteurp.recons_bruit4=cgs(matriceR.Rw,delta.w4);
+    Vecteurp.recons_bruit4=cgs(matriceR.Rw,delta.w4,tol);
     Vecteurp_diff.bruit4=Vecteurp.recons_bruit4-Vecteurp.orig;
     Vecteurp_relat.bruit4=zeros(donnee.nelem,1);
     for i=1:donnee.nelem
@@ -126,7 +127,7 @@ clear all;close all;clc;
     
     ModePropreObs.Bruit5.Valeur = ModePropreObs.Valeur + (ModePropreObs.Valeur/1)*rand(1,1);
     delta.w5=ModePropreObs.Bruit5.Valeur-ModePropreNorme.Valeur';
-    Vecteurp.recons_bruit5=cgs(matriceR.Rw,delta.w5);
+    Vecteurp.recons_bruit5=cgs(matriceR.Rw,delta.w5,tol);
     Vecteurp_diff.bruit5=Vecteurp.recons_bruit5-Vecteurp.orig;
     Vecteurp_relat.bruit5=zeros(donnee.nelem,1);
     for i=1:donnee.nelem
