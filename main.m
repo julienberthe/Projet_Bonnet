@@ -55,6 +55,7 @@ clear all;close all;clc;
     
     % Calcul des valeurs observées    
     disp('IV  Calcul des valeurs observées')
+    
     X=rand(size(ModePropreNorme.Vecteur,2),1);
     Vecteurp.orig=roundn(X,-3);
     clear X;
@@ -62,8 +63,7 @@ clear all;close all;clc;
     
     % Probleme inverse pour retrouver deltap à partir des valeurs propres
     demarche='GCJ';     %%choix de l'approche: 'GCJ' gradient conjugué, 'QUAD' minimisation d'une fonction quadratique
-     
-    
+        
     disp('V  Résolution du pb inverse');
     switch demarche;
         case 'GCJ';
@@ -141,7 +141,14 @@ clear all;close all;clc;
             for i=1:donnee.nelem
                 Vecteurp_relat.bruit5(i)=Vecteurp_diff.bruit5(i)/Vecteurp.orig(i);
             end
+            
+        
         case 'QUAD';
+             disp('>>>>> Méthode basée sur la minimisation d''une fonction quadratique');
+            tol=10^-9; %tolérance 
+            %%Données non bruitées
+            disp('>>>>> Données non bruitées');
+            Vecteurp.recons=min_quad();
             
     end
     %%Affichage
