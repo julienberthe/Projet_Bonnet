@@ -15,7 +15,7 @@ clear all;close all;clc;
 	donnee.mat.rho=7000;		%masse volumique
     
     %Parametres de la methode EF
-	donnee.nelem = 16;	%nombre d'elements
+	donnee.nelem = 30;	%nombre d'elements
     
     %mise en donnee
 	for i=1:donnee.nelem
@@ -74,6 +74,7 @@ clear all;close all;clc;
     x=1:1:donnee.nelem;
     figure;
     bar(x,Vecteurp_diff.orig)
+    figure;
     bar(x,Vecteurp_relat.orig)
     
     % On bruite les données
