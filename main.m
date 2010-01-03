@@ -17,6 +17,10 @@ clear all;close all;clc;
     %Parametres de la methode EF
 	donnee.nelem = 30;	%nombre d'elements
     
+    %Approche inverse
+    nbmode=2;   %nombre de modes propres observés à prendre en compte
+    
+    
     %mise en donnee
 	for i=1:donnee.nelem
 		donnee.Elem{i}.xinit=(i-1)*donnee.mat.L/donnee.nelem;
@@ -48,11 +52,9 @@ clear all;close all;clc;
     % Construction de la matrice R
     
     disp('III  Construction de la matrice R')
-    matriceR1=ConstructionRw(ModePropreNorme,matrice,donnee);
-    matriceR=ConstructionRu(ModePropreNorme,matrice,donnee,matriceR1);
-    matriceR.Rw=matriceR1.Rw;
-    clear matriceR1;
-    
+    matrice.Rw=ConstructionRw(ModePropreNorme,donnee,nbmode);
+    matrice.Ru=ConstructionRu(ModePropreNorme,donnee,nbmode);
+       
     % Calcul des valeurs observées    
     disp('IV  Calcul des valeurs observées')
     
