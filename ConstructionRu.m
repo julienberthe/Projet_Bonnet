@@ -5,7 +5,7 @@ function ru=ConstructionRu(ModePropreNorme,donneeS,nbmode);
    
     %initialisation de la matrice Ru
     for j=1:nbmode
-        ru{j}=zeros(donneeS.nelem);   
+        ru{j}=zeros(donneeS.nelem+1,donneeS.nelem);
     end
     
 	%assemblage
